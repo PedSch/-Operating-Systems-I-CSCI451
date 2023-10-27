@@ -1,0 +1,35 @@
+#include <mutex>
+#include <stdlib.h>
+#include <string>
+#include <unistd.h>
+
+pthread_mutex_t balance = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t completed = PTHREAD_MUTEX_INITIALIZER;
+
+int main()
+{
+	pthread_t p1;
+	pthread_t p2;
+	pthread_t p3;
+    pthread_t p4;
+    pthread_t p5;
+	
+//dataStruct id1 = {"Morticia.in", 1}; //mom THREAD 	
+	dataStruct id1 = {"Vlad.in", 1}; //2nd THREAD 
+	dataStruct id2 = {"Frank.in", 2};  // 3rd THREAD 
+	dataStruct id3 = {"Bigfoot.in", 3};  // 4th THREAD 
+   dataStruct id4 = {"Gomez.in", 4};//th THREAD 
+   dataStruct id5 = {"Casper.in", 5}; //5th THREAD     
+		
+	pthread_create(&p1, NULL, readFile, (void*)&id1);
+	pthread_detach(p1);
+	pthread_create(&p2, NULL, readFile, (void*)&id2);
+	pthread_detach(p2);
+	pthread_create(&p3, NULL, readFile, (void*)&id3);
+	pthread_detach(p3);
+    pthread_create(&p4, NULL, readFile, (void*)&id4);
+	pthread_detach(p4);
+    pthread_create(&p5, NULL, readFile, (void*)&id5);
+	pthread_detach(p5);
+    
+}

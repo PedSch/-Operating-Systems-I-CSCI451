@@ -1,0 +1,55 @@
+#include <stdlib.h>
+#include <string>
+#include <unistd.h>
+#include <fstream>
+#include <pthread.h>
+#include <unistd.h>
+#include <iostream>
+#include <mutex>
+
+// Pedro Schmidt
+// CSci 451
+// to compile  g++ hw9.mutex -std=c++11 -lpthread
+
+using namespace std;
+void *readFile(void* passedStruct)
+ {
+	ifstream selectedFile;
+	struct dataStruct *threadData;
+	threadData = (struct dataStruct *) passedStruct;
+	
+	int id = threadData->identifier;
+	string fileName = threadData -> fileName;
+	selectedFile.open(fileName);
+	string lineString;
+	
+	
+	while(1)
+    {
+		selectedFile >> skipws >> lineString;
+		if(selectedFile.eof()) 
+      {
+			pthread_mutex_lock(&completed);
+			fin++;
+			pthread_mutex_unlock(&completed);
+			break;
+		}
+		//cout << lineString << endl;
+		if(lineString == "C")  //r indicates the start of a critical section
+      {
+			pthread_mutex_lock(&current); //where we aquire the balance
+         
+		} 
+      else if(lineString == "B")  //w // end of the critical section where we write the account balance to a global storage 
+      {
+	cout << limit << id << "" << endl; //AFTER EVERY NEW THREAD THIS WILL BE ITERATED 
+	pthread_mutex_unlock(&current);
+	sleep(.3);
+      }
+     else 
+      {
+	limit += stoi(lineString);
+	}
+	}
+    
+}
